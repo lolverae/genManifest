@@ -1,12 +1,12 @@
-file_version: '0.2'
+file_version: '0.1'
 warehouse-service:
   application:
     deployment:
       appVersion: 1.0.0
-      commitId: 12341
+      commitId: 111111
       image:
         repository: lolverae/warehouse_service
-        tag: 1.0.0-12341
+        tag: 1.0.0-111111
       name: warehouse-app
       namespace: warehouse-ns
       port: 8000
