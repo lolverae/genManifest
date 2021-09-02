@@ -1,7 +1,6 @@
 import yaml
 import argparse
 import re
-import sys
 from shutil import copy
 
 header = """
@@ -24,12 +23,33 @@ def write_config(filename, **kwargs):
           image:
             repository: lolverae/warehouse_service
             tag: {docker_tag}
+          env: 
+            dbHost: warehouse-db
+            dbPort: 5984
         service:
           namespace: warehouse-ns
           name: warehouse-app
           type: NodePort
           port: 8000
-"""
+      database:
+        deployment:
+          name: warehouse-app
+          namespace: warehouse-ns
+          replicaCount: 1
+          image:
+            repository: couchdb
+            tag: 2:3
+          port: 5984
+          env: 
+            dbHost: warehouse-db
+            dbPort: 5984
+        service:
+          name: warehouse-app
+          namespace: warehouse-ns
+          port: 5934
+          type: NodePort
+          NodePort: 30001
+    """
     # Adding new service for given component in given manifest file
     with open(filename, 'r+') as yml_file:
         yaml_dict = yaml.safe_load(yml_file)
