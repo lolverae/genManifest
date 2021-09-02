@@ -16,3 +16,21 @@ warehouse:
       namespace: warehouse-ns
       port: 8000
       type: NodePort
+database:
+  deployment:
+    env:
+      dbHost: warehouse-db
+      dbPort: 5984
+    image:
+      repository: couchdb
+      tag: 123
+    name: warehouse-app
+    namespace: warehouse-ns
+    port: 5984
+    replicaCount: 1
+  service:
+    NodePort: 30001
+    name: warehouse-app
+    namespace: warehouse-ns
+    port: 5934
+    type: NodePort

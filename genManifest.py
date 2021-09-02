@@ -6,9 +6,7 @@ from shutil import copy
 header = """
 file_version: '0.1'
 """
-
 # Template for new service
-
 def write_config(filename, **kwargs):
     template ="""
     {component_name}:
@@ -60,16 +58,14 @@ def write_config(filename, **kwargs):
         yml_file.truncate()
 
 
-def update_valuefiles(filename, **kwargs):
+def update_valuefiles(filename:str, **kwargs):
     assert kwargs
     directory = 'valuefiles'
     component_name = kwargs.get('name')
     valuefile = 'manifest.yaml'
-
-    # # reading pre-manifest file for later to be updated
+    # reading pre-manifest file for later to be updated
     with open(valuefile, 'r') as fpm:
         y_ml = yaml.safe_load(fpm) or {}
-    
     #  Version Update, after adding components data
     file_version = y_ml["file_version"]
     file_version = float(file_version) + float(0.1)
@@ -83,17 +79,24 @@ def update_valuefiles(filename, **kwargs):
     print("Added old valuefiles manifest-%s" % (file_version))
     copy(valuefile, old_valuefile)
 
-def update_manifest(component_name, docker_tag):
+def update_manifest(component_name:str, docker_tag:str):
+    # reading pre-manifest file for later to be updated
+    with open('manifest.yaml', 'r') as fpm:
+        y_ml = yaml.safe_load(fpm) or {}
+    # check if the commit ID really changed
+    current_version = y_ml['warehouse']['application']['deployment']["commitId"]
     #split docker tag to get directory, version and commit_id
     separator  = len( re.findall('[-]', docker_tag) )
     #if directory is not retreived default to master
     if separator == 1:
         app_version = docker_tag.split('-')[0]
         commit_id = docker_tag.split('-')[1]
-
-    write_config('manifest.yaml', component_name=component_name, docker_tag=docker_tag, commit_id=commit_id, app_version=app_version)
-    # update pre manifest file    
-    update_valuefiles('manifest.yaml', commitId=commit_id, tag=docker_tag, name=component_name)
+    if current_version != commit_id:
+      # update pre manifest file    
+      write_config('manifest.yaml', component_name=component_name, docker_tag=docker_tag, commit_id=commit_id, app_version=app_version)
+      update_valuefiles('manifest.yaml', commitId=commit_id, tag=docker_tag, name=component_name)
+    else:
+      print("The previous manifest and new version of the file is the same, no changes will be made")
 
 def main():
     parser = argparse.ArgumentParser()
