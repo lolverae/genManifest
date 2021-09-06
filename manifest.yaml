@@ -19,6 +19,7 @@ warehouse:
       namespace: warehouse-ns
       port: 8000
       type: NodePort
+      NodePort: 30001
   database:
     deployment:
       env:
@@ -32,8 +33,6 @@ warehouse:
       port: 5984
       replicaCount: 1
     service:
-      NodePort: 30001
       name: warehouse-app
       namespace: warehouse-ns
       port: 5934
-      type: NodePort

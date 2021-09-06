@@ -1,40 +1,3 @@
-application:
-  deployment:
-    appVersion: 1.0.0
-    commitId: 711d7a
-    env:
-      dbHost: warehouse-db
-      dbPort: 5984
-    image:
-      repository: lolverae/warehouse_service
-      tag: 1.0.0-711d7a
-    name: warehouse-app
-    namespace: warehouse-ns
-    port: 8000
-    replicaCount: 1
-  service:
-    name: warehouse-app
-    namespace: warehouse-ns
-    port: 8000
-    type: NodePort
-database:
-  deployment:
-    env:
-      dbHost: warehouse-db
-      dbPort: 5984
-    image:
-      repository: couchdb
-      tag: 123
-    name: warehouse-app
-    namespace: warehouse-ns
-    port: 5984
-    replicaCount: 1
-  service:
-    NodePort: 30001
-    name: warehouse-app
-    namespace: warehouse-ns
-    port: 5934
-    type: NodePort
 file_version: '0.1'
 warehouse:
   application:
@@ -56,6 +19,7 @@ warehouse:
       namespace: warehouse-ns
       port: 8000
       type: NodePort
+      NodePort: 30001
   database:
     deployment:
       env:
@@ -69,8 +33,6 @@ warehouse:
       port: 5984
       replicaCount: 1
     service:
-      NodePort: 30001
       name: warehouse-app
       namespace: warehouse-ns
       port: 5934
-      type: NodePort

@@ -29,6 +29,7 @@ def write_config(filename, **kwargs):
           name: warehouse-app
           type: NodePort
           port: 8000
+          NodePort: 30001
       database:
         deployment:
           name: warehouse-app
@@ -45,8 +46,6 @@ def write_config(filename, **kwargs):
           name: warehouse-app
           namespace: warehouse-ns
           port: 5934
-          type: NodePort
-          NodePort: 30001
     """
     # Adding new service for given component in given manifest file
     with open(filename, 'r+') as yml_file:
