@@ -19,7 +19,7 @@ warehouse:
       namespace: warehouse-ns
       port: 8000
       type: NodePort
-      NodePort: 30001
+      nodePort: 30001
   database:
     deployment:
       env:

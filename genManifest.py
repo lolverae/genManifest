@@ -29,7 +29,7 @@ def write_config(filename, **kwargs):
           name: warehouse-app
           type: NodePort
           port: 8000
-          NodePort: 30001
+          nodePort: 30001
       database:
         deployment:
           name: warehouse-app
